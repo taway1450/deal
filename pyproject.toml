@@ -8,7 +8,7 @@ authors = [{ name = "Gram", email = "gram@orsinium.dev" }]
 license = { text = "MIT" }
 readme = "README.md"
 dynamic = ["version", "description"]
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 keywords = [
     "deal",
     "contracts",
@@ -67,7 +67,7 @@ lint = [
     "flake8",
     "flake8-commas",
     "flake8-quotes",
-    "mypy>=0.900",
+    "mypy>=2.0",
     "mypy_test>=0.1.1",
     "isort",
 
@@ -118,12 +118,12 @@ has-astroid = "not is_installed('astroid')"
 
 [tool.mypy]
 files = ["deal"]
-python_version = "3.9"
+python_version = "3.10"
 plugins = ["deal.mypy"]
 ignore_missing_imports = true
 show_error_codes = true
 
-allow_redefinition = true
+allow_redefinition_old = true
 check_untyped_defs = true
 strict_equality = true
 warn_redundant_casts = true

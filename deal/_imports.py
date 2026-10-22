@@ -2,10 +2,9 @@ from __future__ import annotations
 
 import ast
 import sys
+from _frozen_importlib_external import PathFinder  # pyright: reportMissingImports=false
 from types import ModuleType
 from typing import Callable
-
-from _frozen_importlib_external import PathFinder  # pyright: reportMissingImports=false
 
 import deal
 

@@ -8,7 +8,7 @@ from typing import Callable, List
 
 TokensType = List[tokenize.TokenInfo]
 Processor = Callable[[TokensType], TokensType]
-processors = []
+processors: list[Processor] = []
 
 
 def processor(func: Processor) -> Processor:

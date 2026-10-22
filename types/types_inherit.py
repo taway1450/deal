@@ -11,7 +11,7 @@ def inherit_method() -> None:
         def f(self, x: int) -> float:
             raise NotImplementedError
 
-    reveal_type(B().f)  # R: def (x: builtins.int) -> builtins.float
+    reveal_type(B().f)  # R: def (x: int) -> float
 
 
 def inherit_class() -> None:
@@ -24,4 +24,4 @@ def inherit_class() -> None:
         def f(self, x: int) -> float:
             raise NotImplementedError
 
-    reveal_type(B().f)  # R: def (x: builtins.int) -> builtins.float
+    reveal_type(B().f)  # R: def (x: int) -> float
