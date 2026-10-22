@@ -36,7 +36,7 @@ def test_has_side_effect(tmp_path: Path, capsys):
 
     stream.seek(0)
     captured = stream.read()
-    assert '/example.py' in captured
+    assert 'example.py' in captured
     assert 'running func' in captured
     assert 'func(b=0)' in captured
     assert 'set' in captured
@@ -62,7 +62,7 @@ def test_no_side_effects(tmp_path: Path, capsys):
 
     stream.seek(0)
     captured = stream.read()
-    assert '/example.py' in captured
+    assert 'example.py' in captured
     assert 'running func' in captured
     assert 'func(b=0)' not in captured
 
@@ -88,4 +88,4 @@ def test_no_matching_funcs(tmp_path: Path):
 
     stream.seek(0)
     captured = stream.read()
-    assert '/example.py' not in captured
+    assert 'example.py' not in captured

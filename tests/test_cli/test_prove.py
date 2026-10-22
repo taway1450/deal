@@ -30,7 +30,7 @@ def test_incorrect(tmp_path: Path):
     stream.seek(0)
     captured = stream.read()
     assert result == 1, captured
-    assert '/example.py\n' in captured
+    assert 'example.py\n' in captured
     assert ' func\n' in captured
     assert ' failed post-condition' in captured
 
@@ -52,7 +52,7 @@ def test_correct(tmp_path: Path):
     stream.seek(0)
     captured = stream.read()
     assert result == 0, captured
-    assert '/example.py\n' in captured
+    assert 'example.py\n' in captured
     assert ' func\n' in captured
     assert ' proved! post-condition' in captured
 
@@ -87,7 +87,7 @@ def test_skip_show_skipped(tmp_path: Path):
     stream.seek(0)
     captured = stream.read()
     assert result == 0, captured
-    assert '/example.py\n' in captured
+    assert 'example.py\n' in captured
     assert ' func\n' in captured
     exp = 'skipped failed to interpret function arguments (missed annotation for x)\n'
     assert exp in captured

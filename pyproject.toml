@@ -100,6 +100,7 @@ addopts = [
 branch = true
 omit = ["deal/linter/_template.py", "deal/mypy.py"]
 plugins = ["coverage_conditional_plugin"]
+patch = ["subprocess"]
 
 [tool.coverage.report]
 exclude_lines = [

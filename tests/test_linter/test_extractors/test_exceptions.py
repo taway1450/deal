@@ -291,7 +291,8 @@ def get_docstring_parser_tests():
     """
     root = Path(docstring_parser.__path__[0]) / 'tests'
     tests_found = 0
-    if astroid is None:
+    # newer docstring_parser releases don't ship their tests
+    if astroid is None or not root.exists():
         return
     for path in root.iterdir():
         if path.suffix != '.py':

@@ -41,7 +41,7 @@ def test_safe_violation(tmp_path: Path, capsys):
 
     stream.seek(0)
     captured = stream.read()
-    assert '/example.py' in captured
+    assert 'example.py' in captured
     assert 'running func' in captured
     assert 'func(a=0, b=0)' in captured
     assert 'ZeroDivisionError' in captured
@@ -74,7 +74,7 @@ def test_no_violations(tmp_path: Path):
 
     stream.seek(0)
     captured = stream.read()
-    assert '/example.py' in captured
+    assert 'example.py' in captured
     assert 'running func' in captured
     assert 'not_pure' not in captured
     assert 'func(' not in captured
@@ -102,7 +102,7 @@ def test_no_matching_funcs(tmp_path: Path):
 
     stream.seek(0)
     captured = stream.read()
-    assert '/example.py' not in captured
+    assert 'example.py' not in captured
 
 
 @pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
