@@ -48,6 +48,6 @@ class Dispatch(Generic[F]):
                     if exc.origin is not contracts.func:
                         raise
                     exceptions.append(exc)
+            raise NoMatchError(tuple(exceptions))
         finally:
             state.debug = old_state
-        raise NoMatchError(tuple(exceptions))
