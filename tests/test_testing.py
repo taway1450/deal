@@ -1,4 +1,5 @@
 import re
+from pathlib import Path
 from typing import NoReturn, TypeVar
 
 import pytest
@@ -179,6 +180,11 @@ def test_return_type():
 
     case = deal.TestCase(args=('hi', ), **kwargs)
     msg = re.escape('the return value (str) is not an instance of int')
+    with pytest.raises(typeguard.TypeCheckError, match=msg):
+        case()
+
+    case = deal.TestCase(args=(Path(), ), **kwargs)
+    msg = re.escape(f'the return value ({type(Path()).__module__}.')
     with pytest.raises(typeguard.TypeCheckError, match=msg):
         case()
 

@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 from functools import update_wrapper
-from inspect import signature
-from typing import TYPE_CHECKING, Callable, NamedTuple, NoReturn, overload
+from inspect import signature, unwrap
+from typing import TYPE_CHECKING, Callable, NamedTuple, NoReturn, get_type_hints, overload
 
 from . import introspection
 from ._cached_property import cached_property
@@ -62,15 +62,32 @@ class TestCase(NamedTuple):
             import typeguard
         except ImportError:
             return
-        memo = typeguard.CallMemo(
-            func=self.func,  # type: ignore[arg-type]
-            frame_locals=self.kwargs,
-        )
-        from typeguard._functions import check_argument_types, check_return_type
+        # Only public API shared by typeguard 3 and 4 is used here.
+        hints = get_type_hints(self.func)
+        func_globals = getattr(unwrap(self.func), '__globals__', {})
+        memo = typeguard.TypeCheckMemo(func_globals, self.kwargs)
+        checks = []
+        if not self.args:
+            for name, value in self.kwargs.items():
+                checks.append((value, hints.get(name), f'argument "{name}"'))
+        checks.append((result, hints.get('return'), 'the return value'))
+        for value, annotation, path in checks:
+            if annotation is None:
+                continue
+            try:
+                typeguard.check_type_internal(value, annotation, memo)
+            except typeguard.TypeCheckError as exc:
+                exc.append_path_element(f'{path} ({_type_name(value)})')
+                raise
 
-        if not self.args and self.kwargs:
-            check_argument_types(memo=memo)
-        check_return_type(result, memo=memo)
+
+def _type_name(value: object) -> str:
+    """Name of the value's type, in the same format as typeguard uses.
+    """
+    cls = type(value)
+    if cls.__module__ == 'builtins':
+        return cls.__qualname__
+    return f'{cls.__module__}.{cls.__qualname__}'
 
 
 class cases:  # noqa: N

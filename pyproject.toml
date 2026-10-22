@@ -49,7 +49,7 @@ integration = [ # for integration testing
     "deal-solver>=0.1.2",
     "hypothesis",
     "pygments",
-    "typeguard<4.0.0",
+    "typeguard>=3.0.0",
     "vaa>=0.2.1",
     "sphinx>=4.5.0",
     "flake8",
@@ -75,7 +75,7 @@ lint = [
     "deal-solver>=0.1.2",
     "hypothesis",
     "pygments",
-    "typeguard<4.0.0",
+    "typeguard>=3.0.0",
 ]
 docs = [
     "m2r2>=0.3.3.post2",     # markdown support in docstrings for sphinx
