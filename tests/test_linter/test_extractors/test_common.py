@@ -1,14 +1,22 @@
 import ast
+from pathlib import Path
 
 import pytest
 
-from deal.linter._extractors.common import _get_module, get_full_name, get_name, infer
+from deal.linter._contract import Category
+from deal.linter._extractors.common import (
+    _get_module, get_full_name, get_name, get_public_module_name, get_stub, infer,
+)
+from deal.linter._stub import StubsManager
 
 
 try:
     import astroid
 except ImportError:
     astroid = None
+
+# `pathlib.Path` is implemented in `pathlib._local` on Python 3.13 only
+PATHLIB_MODULE = Path.write_text.__module__
 
 
 @pytest.mark.parametrize('text, expected', [
@@ -34,7 +42,7 @@ def test_get_name(text, expected):
 @pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 @pytest.mark.parametrize('text, expected', [
     ('unknown', []),
-    ('from pathlib import Path\nPath.write_text', [('pathlib', 'Path.write_text')]),
+    ('from pathlib import Path\nPath.write_text', [(PATHLIB_MODULE, 'Path.write_text')]),
     ('def f(): pass\nf', [('', 'f')]),
     ('class C:\n def f(): pass\nC.f', [('', 'C.f')]),
     ('class C:\n def f(): pass\nc = C()\nc.f', [('', 'C.f')]),
@@ -47,6 +55,27 @@ def test_infer(text, expected):
     expr = tree.body[-1].value
     actual = infer(expr=expr)
     assert [get_full_name(e) for e in actual] == expected
+
+
+@pytest.mark.parametrize('module_name, expected', [
+    ('pathlib', 'pathlib'),
+    ('pathlib._local', 'pathlib'),
+    ('a._b._c', 'a'),
+    ('a._b.c', 'a._b.c'),
+    ('_io', '_io'),
+])
+def test_get_public_module_name(module_name, expected):
+    assert get_public_module_name(module_name) == expected
+
+
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
+def test_get_stub_from_private_module():
+    expr = astroid.extract_node('from pathlib import Path\nPath.glob')
+    func = infer(expr=expr)[0]
+    module_name, func_name = get_full_name(expr=func)
+    stub = get_stub(module_name=module_name, expr=func, stubs=StubsManager())
+    assert stub is not None
+    assert 'global' in stub.get(func=func_name, contract=Category.HAS)
 
 
 @pytest.mark.skipif(astroid is None, reason='astroid is not installed')

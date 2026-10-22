@@ -151,6 +151,8 @@ def get_stub(
     if not module_name:
         return None
     stub = stubs.get(module_name)
+    if stub is None:
+        stub = stubs.get(get_public_module_name(module_name))
     if stub is not None:
         return stub
 
@@ -161,6 +163,18 @@ def get_stub(
     if not path.exists():
         return None
     return stubs.read(path=path)
+
+
+def get_public_module_name(module_name: str) -> str:
+    """Strip trailing private submodules from the module name.
+
+    Python 3.13 moved `pathlib.Path` into `pathlib._local`,
+    but stubs are named after the public module.
+    """
+    parts = module_name.split('.')
+    while len(parts) > 1 and parts[-1].startswith('_'):
+        parts.pop()
+    return '.'.join(parts)
 
 
 def _get_module(expr: astroid.NodeNG) -> astroid.Module | None:
