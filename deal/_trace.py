@@ -122,15 +122,15 @@ def format_lines(statements: set[int], lines: set[int]) -> str:
 
 
 def _line_ranges(statements: set[int], lines: set[int]) -> Iterator[tuple[int, int]]:
-    statements = sorted(statements)
-    lines = sorted(lines)
+    sorted_statements = sorted(statements)
+    sorted_lines = sorted(lines)
     start = 0
     end = 0
     lidx = 0
-    for stmt in statements:
-        if lidx >= len(lines):
+    for stmt in sorted_statements:
+        if lidx >= len(sorted_lines):
             break
-        if stmt == lines[lidx]:
+        if stmt == sorted_lines[lidx]:
             lidx += 1
             if not start:
                 start = stmt

@@ -373,8 +373,8 @@ class cases:  # noqa: N
                     validator.validate(*ex[0], **ex[1])
                 except validator.exception_type:
                     hypothesis.reject()
-            case = self._make_case(*ex[0], **ex[1])
-            test_func(case, *args, **kwargs)
+            test_case = self._make_case(*ex[0], **ex[1])
+            test_func(test_case, *args, **kwargs)
 
         wrapper = self._impersonate(wrapper=wrapper, wrapped=test_func)
         wrapper = hypothesis.example(case=EXAMPLE)(wrapper)

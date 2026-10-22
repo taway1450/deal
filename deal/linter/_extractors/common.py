@@ -181,8 +181,8 @@ class Extractor:
     def register(
         self, *types: type | Callable[[], type],
     ) -> Callable[[Handler], Handler]:
-        types = tuple(self._eval_types(types))
-        return partial(self._register, types)
+        evaluated = tuple(self._eval_types(types))
+        return partial(self._register, evaluated)
 
     @staticmethod
     def _eval_types(types: tuple[type | Callable[[], type], ...]) -> Iterator[type]:

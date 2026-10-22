@@ -37,12 +37,12 @@ rex_exception = re.compile(r'deal\.(\w*ContractError)')
 
 @contextmanager
 def sys_path(path: Path):
-    path = str(path)
-    sys.path.insert(0, path)
+    path_str = str(path)
+    sys.path.insert(0, path_str)
     try:
         yield
     finally:
-        if sys.path[0] == path:
+        if sys.path[0] == path_str:
             del sys.path[0]
 
 

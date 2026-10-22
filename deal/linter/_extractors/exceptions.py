@@ -130,7 +130,6 @@ def _exceptions_from_func(expr: ast.Call | astroid.Call) -> Iterator[Token]:
                 yield Token(value=name)
 
         # get exceptions from the docstring
-        name: str
         if value.doc_node is not None:
             for name in _excs_from_doc(value.doc_node.value):
                 name = getattr(builtins, name, name)

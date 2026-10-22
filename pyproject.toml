@@ -123,7 +123,6 @@ plugins = ["deal.mypy"]
 ignore_missing_imports = true
 show_error_codes = true
 
-allow_redefinition_old = true
 check_untyped_defs = true
 strict_equality = true
 warn_redundant_casts = true
