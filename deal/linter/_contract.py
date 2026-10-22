@@ -17,7 +17,7 @@ except ImportError:
     pass
 
 
-TEMPLATE = (Path(__file__).parent / '_template.py').read_text()
+TEMPLATE = (Path(__file__).parent / '_template.py').read_text(encoding='utf8')
 CONTRACT_INDEX = 3
 FUNC_INDEX = 4
 

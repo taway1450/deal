@@ -78,7 +78,7 @@ class LintCommand(Command):
     def get_errors(paths: Iterable[str]) -> Iterator[dict]:
         for arg in paths:
             for path in get_paths(Path(arg)):
-                content = path.read_text()
+                content = path.read_text(encoding='utf8')
                 checker = Checker(
                     filename=str(path),
                     tree=ast.parse(content),

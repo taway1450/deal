@@ -134,7 +134,7 @@ class PseudoFunc(NamedTuple):
 def _get_funcs(*, path: Path) -> Iterator[PseudoFunc]:
     if astroid is None:  # pragma: no-astroid
         raise ImportError('astroid is required for generating stubs')
-    text = path.read_text()
+    text = path.read_text(encoding='utf8')
     tree = astroid.parse(code=text, path=str(path))
     for expr in tree.body:
         yield from _get_funcs_from_expr(expr=expr)

@@ -46,7 +46,7 @@ def run_solver(
     colors: dict[str, str],
 ) -> int:
     file_name_shown = False
-    text = path.read_text()
+    text = path.read_text(encoding='utf8')
     theorems = DealTheorem.from_text(text)
     failed_count = 0
     for theorem in theorems:

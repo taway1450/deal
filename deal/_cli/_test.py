@@ -56,7 +56,7 @@ def has_pure_contract(func: Func) -> bool:
 
 
 def get_func_names(path: Path) -> Iterator[str]:
-    text = path.read_text()
+    text = path.read_text(encoding='utf8')
     for func in Func.from_text(text):
         if has_pure_contract(func):
             yield func.name

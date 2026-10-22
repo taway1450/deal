@@ -53,7 +53,7 @@ class Checker:
 
     @classmethod
     def from_path(cls, path: Path) -> Checker:
-        source = path.read_text()
+        source = path.read_text(encoding='utf8')
         with path.open('rb') as stream:
             tokens = list(tokenize.tokenize(stream.readline))
         return cls(
@@ -69,7 +69,7 @@ class Checker:
     def get_funcs(self) -> list[Func]:
         if self._filename == 'stdin' or astroid is None:
             return Func.from_ast(tree=self._tree)
-        text = Path(self._filename).read_text()
+        text = Path(self._filename).read_text(encoding='utf8')
         try:
             tree = astroid.parse(text)
         except astroid.AstroidSyntaxError:

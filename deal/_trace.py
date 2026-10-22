@@ -78,7 +78,7 @@ def _get_func_body_statements(func: Callable) -> set[int]:
     func_name = func.__name__
     file_name = func.__code__.co_filename
 
-    with open(file_name) as stream:
+    with open(file_name, encoding='utf8') as stream:
         tree = ast.parse(stream.read(), filename=file_name)
 
     func_node = _get_func_node(func_name=func_name, tree=tree)
